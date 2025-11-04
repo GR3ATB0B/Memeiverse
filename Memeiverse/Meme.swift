@@ -1,33 +1,47 @@
 import Foundation
-import SwiftUI
 
 struct Meme: Identifiable, Equatable {
-    let id = UUID()
-    let key: String
-    let title: String
-    let emoji: String
-    let tagline: String
-    let era: String
-    let color: Color
-    let virality: Int   // 0-100
-    let stonks: Int    // 0-100
-    let chaos: Int     // 0-100
-    let lore: String
-    
-    init(key: String, title: String, emoji: String, tagline: String, era: String, color: Color, virality: Int, stonks: Int, chaos: Int, lore: String) {
-        self.key = key
-        self.title = title
-        self.emoji = emoji
-        self.tagline = tagline
-        self.era = era
-        self.color = color
-        self.virality = Meme.normalizeStat(virality)
-        self.stonks = Meme.normalizeStat(stonks)
-        self.chaos = Meme.normalizeStat(chaos)
-        self.lore = lore
+    enum Source: String, Codable {
+        case superMeme = "supermeme.ai"
+        case reddit = "meme-api.com"
+        case curated = "curated"
     }
 
-    private static func normalizeStat(_ raw: Int) -> Int {
-        return min(max(raw, 0), 100)
+    let id: String
+    let title: String
+    let caption: String?
+    let imageURL: URL?
+    let postURL: URL?
+    let author: String?
+    let tags: [String]
+    let upvotes: Int?
+    let source: Source
+    let isTrending: Bool
+    let timestamp: Date?
+
+    init(
+        id: String = UUID().uuidString,
+        title: String,
+        caption: String? = nil,
+        imageURL: URL?,
+        postURL: URL? = nil,
+        author: String? = nil,
+        tags: [String] = [],
+        upvotes: Int? = nil,
+        source: Source,
+        isTrending: Bool = false,
+        timestamp: Date? = nil
+    ) {
+        self.id = id
+        self.title = title
+        self.caption = caption
+        self.imageURL = imageURL
+        self.postURL = postURL
+        self.author = author
+        self.tags = tags
+        self.upvotes = upvotes
+        self.source = source
+        self.isTrending = isTrending
+        self.timestamp = timestamp
     }
 }

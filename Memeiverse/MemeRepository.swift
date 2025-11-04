@@ -1,16 +1,78 @@
 import Foundation
-import SwiftUI
 
 struct MemeRepository {
-    func loadMemes(shuffled: Bool) -> [Meme] {
+    /// Curated classics that can populate the discovery sections when network content is unavailable.
+    func loadCuratedMemes(shuffled: Bool = false) -> [Meme] {
         var items: [Meme] = [
-            Meme(key: "STONKS", title: "STONKS", emoji: "📈", tagline: "Numbers go up.", era: "2019", color: .cyan, virality: 72, stonks: 95, chaos: 38, lore: "The classic finance meme embodying irrational optimism. The line only goes up... until it doesn't."),
-            Meme(key: "DOGE", title: "DOGE", emoji: "🐶", tagline: "Such coin. Much wow.", era: "2013", color: .orange, virality: 88, stonks: 65, chaos: 42, lore: "Shiba-powered internet culture that accidentally became a currency."),
-            Meme(key: "PEPE", title: "PEPE", emoji: "🐸", tagline: "Feels good man.", era: "2005", color: .green, virality: 79, stonks: 58, chaos: 66, lore: "An enduring frog with many moods; cultural impact varies by context."),
-            Meme(key: "NYAN", title: "NYAN CAT", emoji: "🐱", tagline: "To the stars with rainbow trails.", era: "2011", color: .pink, virality: 83, stonks: 40, chaos: 55, lore: "A pastry cat soaring through space, powered by chiptunes."),
-            Meme(key: "RICK", title: "RICKROLL", emoji: "🎵", tagline: "Never gonna give you up.", era: "2007", color: .purple, virality: 91, stonks: 20, chaos: 35, lore: "A bait-and-switch legend that still catches the unwary."),
+            Meme(
+                id: "STONKS",
+                title: "STONKS",
+                caption: "Numbers go up.",
+                imageURL: URL(string: "https://i.imgflip.com/3oevdk.jpg"),
+                postURL: URL(string: "https://knowyourmeme.com/memes/stonks"),
+                author: "Special Meme Fresh",
+                tags: ["finance", "optimism"],
+                upvotes: nil,
+                source: .curated,
+                isTrending: false,
+                timestamp: Date(timeIntervalSince1970: 1561939200)
+            ),
+            Meme(
+                id: "DOGE",
+                title: "DOGE",
+                caption: "Such coin. Much wow.",
+                imageURL: URL(string: "https://i.imgur.com/zcG8RKy.jpg"),
+                postURL: URL(string: "https://knowyourmeme.com/memes/doge"),
+                author: "Kabosu",
+                tags: ["dog", "crypto"],
+                upvotes: nil,
+                source: .curated,
+                isTrending: false,
+                timestamp: Date(timeIntervalSince1970: 1388534400)
+            ),
+            Meme(
+                id: "NYAN",
+                title: "Nyan Cat",
+                caption: "To the stars with rainbow trails.",
+                imageURL: URL(string: "https://i.imgur.com/ik5nX0m.gif"),
+                postURL: URL(string: "https://knowyourmeme.com/memes/nyan-cat"),
+                author: "Chris Torres",
+                tags: ["cat", "gif", "retro"],
+                upvotes: nil,
+                source: .curated,
+                isTrending: false,
+                timestamp: Date(timeIntervalSince1970: 1303862400)
+            ),
+            Meme(
+                id: "RICKROLL",
+                title: "Rickroll",
+                caption: "Never gonna give you up.",
+                imageURL: URL(string: "https://i.imgur.com/H1toF6C.png"),
+                postURL: URL(string: "https://knowyourmeme.com/memes/rickroll"),
+                author: "Rick Astley",
+                tags: ["music", "bait"],
+                upvotes: nil,
+                source: .curated,
+                isTrending: false,
+                timestamp: Date(timeIntervalSince1970: 1174080000)
+            ),
+            Meme(
+                id: "DISTRACTED",
+                title: "Distracted Boyfriend",
+                caption: "A tale of temptation.",
+                imageURL: URL(string: "https://i.imgur.com/gCq8lr3.jpg"),
+                postURL: URL(string: "https://knowyourmeme.com/memes/distracted-boyfriend"),
+                author: "Antonio Guillem",
+                tags: ["stock photo", "relationship"],
+                upvotes: nil,
+                source: .curated,
+                isTrending: false,
+                timestamp: Date(timeIntervalSince1970: 1502755200)
+            )
         ]
-        if shuffled { items.shuffle() }
+        if shuffled {
+            items.shuffle()
+        }
         return items
     }
 }
