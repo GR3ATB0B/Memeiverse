@@ -14,16 +14,16 @@ struct Meme: Identifiable, Equatable {
     let chaos: Int     // 0-100
     let lore: String
     
-    init(key: String, title: String, emoji: String, tagline: String, era: String, color: Color, viralityRaw: Int, stonksRaw: Int, chaosRaw: Int, lore: String) {
+    init(key: String, title: String, emoji: String, tagline: String, era: String, color: Color, virality: Int, stonks: Int, chaos: Int, lore: String) {
         self.key = key
         self.title = title
         self.emoji = emoji
         self.tagline = tagline
         self.era = era
         self.color = color
-        self.virality = Meme.normalizeStat(viralityRaw)
-        self.stonks = Meme.normalizeStat(stonksRaw)
-        self.chaos = Meme.normalizeStat(chaosRaw)
+        self.virality = Meme.normalizeStat(virality)
+        self.stonks = Meme.normalizeStat(stonks)
+        self.chaos = Meme.normalizeStat(chaos)
         self.lore = lore
     }
 

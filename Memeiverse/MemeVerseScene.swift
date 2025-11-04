@@ -49,7 +49,8 @@ final class MemeVerseScene: SKScene {
             node.position = pos
             node.zPosition = 10
             node.removeAllActions()
-            node.run(SKAction.rotate(byAngle: 0.2, duration: 6).repeatForever())
+            let slowOrbit = SKAction.rotate(byAngle: 0.2, duration: 6)
+            node.run(SKAction.repeatForever(slowOrbit))
         }
     }
 
