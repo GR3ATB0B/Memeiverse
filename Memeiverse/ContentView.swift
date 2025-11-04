@@ -184,24 +184,31 @@ private struct MemeHeroCard: View {
                 .fill(Color.white.opacity(0.04))
                 .frame(height: 190)
                 .overlay {
-                    AsyncImage(url: meme.imageURL) { phase in
-                        switch phase {
-                        case .empty:
-                            ProgressView()
-                                .tint(.white)
-                        case .failure:
-                            Image(systemName: "xmark.octagon")
-                                .font(.system(size: 32))
-                                .foregroundColor(.white.opacity(0.7))
-                        case .success(let image):
-                            image
-                                .resizable()
-                                .scaledToFill()
-                        @unknown default:
-                            Color.black.opacity(0.4)
+                    if let assetName = meme.assetName {
+                        Image(assetName)
+                            .resizable()
+                            .scaledToFill()
+                            .clipShape(RoundedRectangle(cornerRadius: 20))
+                    } else {
+                        AsyncImage(url: meme.imageURL) { phase in
+                            switch phase {
+                            case .empty:
+                                ProgressView()
+                                    .tint(.white)
+                            case .failure:
+                                Image(systemName: "xmark.octagon")
+                                    .font(.system(size: 32))
+                                    .foregroundColor(.white.opacity(0.7))
+                            case .success(let image):
+                                image
+                                    .resizable()
+                                    .scaledToFill()
+                            @unknown default:
+                                Color.black.opacity(0.4)
+                            }
                         }
+                        .clipShape(RoundedRectangle(cornerRadius: 20))
                     }
-                    .clipShape(RoundedRectangle(cornerRadius: 20))
                 }
                 .clipShape(RoundedRectangle(cornerRadius: 20))
                 .overlay(alignment: .topLeading) {
@@ -255,23 +262,30 @@ private struct MemeTile: View {
                 .fill(Color.white.opacity(0.06))
                 .aspectRatio(4.0 / 5.0, contentMode: .fit)
                 .overlay {
-                    AsyncImage(url: meme.imageURL) { phase in
-                        switch phase {
-                        case .empty:
-                            ProgressView().tint(.white)
-                        case .failure:
-                            Image(systemName: "icloud.slash")
-                                .font(.system(size: 24))
-                                .foregroundStyle(.white.opacity(0.6))
-                        case .success(let image):
-                            image
-                                .resizable()
-                                .scaledToFill()
-                        @unknown default:
-                            Color.white.opacity(0.08)
+                    if let assetName = meme.assetName {
+                        Image(assetName)
+                            .resizable()
+                            .scaledToFill()
+                            .clipShape(RoundedRectangle(cornerRadius: 16))
+                    } else {
+                        AsyncImage(url: meme.imageURL) { phase in
+                            switch phase {
+                            case .empty:
+                                ProgressView().tint(.white)
+                            case .failure:
+                                Image(systemName: "icloud.slash")
+                                    .font(.system(size: 24))
+                                    .foregroundStyle(.white.opacity(0.6))
+                            case .success(let image):
+                                image
+                                    .resizable()
+                                    .scaledToFill()
+                            @unknown default:
+                                Color.white.opacity(0.08)
+                            }
                         }
+                        .clipShape(RoundedRectangle(cornerRadius: 16))
                     }
-                    .clipShape(RoundedRectangle(cornerRadius: 16))
                 }
 
             Text(meme.title)
@@ -314,24 +328,32 @@ private struct MemeLoreBadge: View {
                             .stroke(Color.white.opacity(0.12), lineWidth: 1.5)
                     }
 
-                AsyncImage(url: meme.imageURL) { phase in
-                    switch phase {
-                    case .empty:
-                        ProgressView().tint(.white)
-                    case .failure:
-                        Image(systemName: "sparkles")
-                            .foregroundStyle(.white.opacity(0.8))
-                            .font(.system(size: 28))
-                    case .success(let image):
-                        image
-                            .resizable()
-                            .scaledToFill()
-                    @unknown default:
-                        Color.black.opacity(0.4)
+                if let assetName = meme.assetName {
+                    Image(assetName)
+                        .resizable()
+                        .scaledToFill()
+                        .clipShape(Circle())
+                        .padding(6)
+                } else {
+                    AsyncImage(url: meme.imageURL) { phase in
+                        switch phase {
+                        case .empty:
+                            ProgressView().tint(.white)
+                        case .failure:
+                            Image(systemName: "sparkles")
+                                .foregroundStyle(.white.opacity(0.8))
+                                .font(.system(size: 28))
+                        case .success(let image):
+                            image
+                                .resizable()
+                                .scaledToFill()
+                        @unknown default:
+                            Color.black.opacity(0.4)
+                        }
                     }
+                    .clipShape(Circle())
+                    .padding(6)
                 }
-                .clipShape(Circle())
-                .padding(6)
             }
             .frame(width: 96, height: 96)
 

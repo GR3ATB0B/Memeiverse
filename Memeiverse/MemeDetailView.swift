@@ -16,37 +16,43 @@ struct MemeDetailView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
-                    AsyncImage(url: meme.imageURL) { phase in
-                        switch phase {
-                        case .empty:
-                            ZStack {
+                    if let assetName = meme.assetName {
+                        Image(assetName)
+                            .resizable()
+                            .scaledToFit()
+                            .clipShape(RoundedRectangle(cornerRadius: 22))
+                    } else {
+                        AsyncImage(url: meme.imageURL) { phase in
+                            switch phase {
+                            case .empty:
+                                ZStack {
+                                    RoundedRectangle(cornerRadius: 22)
+                                        .fill(Color.white.opacity(0.08))
+                                    ProgressView().tint(.white)
+                                }
+                            case .failure:
                                 RoundedRectangle(cornerRadius: 22)
                                     .fill(Color.white.opacity(0.08))
-                                ProgressView().tint(.white)
-                            }
-                        case .failure:
-                            RoundedRectangle(cornerRadius: 22)
-                                .fill(Color.white.opacity(0.08))
-                                .overlay {
-                                    VStack(spacing: 8) {
-                                        Image(systemName: "icloud.slash")
-                                            .font(.largeTitle)
-                                        Text("Could not load image.")
-                                            .font(.subheadline)
+                                    .overlay {
+                                        VStack(spacing: 8) {
+                                            Image(systemName: "icloud.slash")
+                                                .font(.largeTitle)
+                                            Text("Could not load image.")
+                                                .font(.subheadline)
+                                        }
+                                        .foregroundStyle(.white.opacity(0.7))
                                     }
-                                    .foregroundStyle(.white.opacity(0.7))
-                                }
-                        case .success(let image):
-                            image
-                                .resizable()
-                                .scaledToFit()
-                                .clipShape(RoundedRectangle(cornerRadius: 22))
-                        @unknown default:
-                            RoundedRectangle(cornerRadius: 22)
-                                .fill(Color.white.opacity(0.08))
+                            case .success(let image):
+                                image
+                                    .resizable()
+                                    .scaledToFit()
+                                    .clipShape(RoundedRectangle(cornerRadius: 22))
+                            @unknown default:
+                                RoundedRectangle(cornerRadius: 22)
+                                    .fill(Color.white.opacity(0.08))
+                            }
                         }
                     }
-
                     VStack(alignment: .leading, spacing: 12) {
                         HStack(spacing: 12) {
                             Text(meme.title)

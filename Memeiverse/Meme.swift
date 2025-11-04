@@ -10,6 +10,7 @@ struct Meme: Identifiable, Equatable {
     let title: String
     let caption: String?
     let imageURL: URL?
+    let assetName: String?
     let postURL: URL?
     let author: String?
     let tags: [String]
@@ -24,6 +25,7 @@ struct Meme: Identifiable, Equatable {
         title: String,
         caption: String? = nil,
         imageURL: URL?,
+        assetName: String? = nil,
         postURL: URL? = nil,
         author: String? = nil,
         tags: [String] = [],
@@ -37,6 +39,7 @@ struct Meme: Identifiable, Equatable {
         self.title = title
         self.caption = caption
         self.imageURL = imageURL
+        self.assetName = assetName
         self.postURL = postURL
         self.author = author
         self.tags = tags
@@ -55,6 +58,7 @@ extension Meme {
             title: title,
             caption: caption,
             imageURL: imageURL,
+            assetName: assetName,
             postURL: postURL,
             author: author,
             tags: tags,
