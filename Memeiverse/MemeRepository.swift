@@ -15,7 +15,8 @@ struct MemeRepository {
                 upvotes: nil,
                 source: .curated,
                 isTrending: false,
-                timestamp: Date(timeIntervalSince1970: 1561939200)
+                timestamp: Date(timeIntervalSince1970: 1561939200),
+                lore: "A boilerplate stock trader turned surreal hero, STONKS embodies internet-era financial optimism. The meme fueled countless jokes about game-stopping trades, stimulus checks, and meme-stock frenzies."
             ),
             Meme(
                 id: "DOGE",
@@ -28,7 +29,8 @@ struct MemeRepository {
                 upvotes: nil,
                 source: .curated,
                 isTrending: false,
-                timestamp: Date(timeIntervalSince1970: 1388534400)
+                timestamp: Date(timeIntervalSince1970: 1388534400),
+                lore: "From a Shiba Inu side-eye photo to the face of meme coins, Doge taught the web how wholesome chaos can move markets. Its Comic Sans barks inspired a decade of 'much wow' remixes and cryptocurrency parodies."
             ),
             Meme(
                 id: "NYAN",
@@ -41,7 +43,8 @@ struct MemeRepository {
                 upvotes: nil,
                 source: .curated,
                 isTrending: false,
-                timestamp: Date(timeIntervalSince1970: 1303862400)
+                timestamp: Date(timeIntervalSince1970: 1303862400),
+                lore: "Pixel pastry cat streaking through space became an anthem for early viral loops. Nyan Cat’s chiptune soundtrack and endless rainbow trail helped define the looping GIF era."
             ),
             Meme(
                 id: "RICKROLL",
@@ -54,7 +57,8 @@ struct MemeRepository {
                 upvotes: nil,
                 source: .curated,
                 isTrending: false,
-                timestamp: Date(timeIntervalSince1970: 1174080000)
+                timestamp: Date(timeIntervalSince1970: 1174080000),
+                lore: "Every suspicious link could be a Rickroll. The internet’s longest-running bait-and-switch keeps Rick Astley’s 1987 bop in perpetual rotation and remains the go-to prank in meme culture."
             ),
             Meme(
                 id: "DISTRACTED",
@@ -67,7 +71,8 @@ struct MemeRepository {
                 upvotes: nil,
                 source: .curated,
                 isTrending: false,
-                timestamp: Date(timeIntervalSince1970: 1502755200)
+                timestamp: Date(timeIntervalSince1970: 1502755200),
+                lore: "This stock photo became a universal template for temptation and shifting loyalties. Brands, politics, and fandoms all used the wandering boyfriend to dramatize every flavor of betrayal."
             )
         ]
         if shuffled {

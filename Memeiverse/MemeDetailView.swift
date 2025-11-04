@@ -75,7 +75,7 @@ struct MemeDetailView: View {
                         }
 
                         HStack(spacing: 12) {
-                            Label(meme.source.rawValue, systemImage: "globe")
+                            Label(meme.source.displayName, systemImage: "globe")
                                 .font(.caption)
                                 .foregroundStyle(.white.opacity(0.7))
 
@@ -90,6 +90,19 @@ struct MemeDetailView: View {
                                     .font(.caption)
                                     .foregroundStyle(.white.opacity(0.7))
                             }
+                        }
+
+                        if let lore = meme.lore, !lore.isEmpty {
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text("Why it mattered")
+                                    .font(.headline)
+                                    .foregroundStyle(.white)
+                                Text(lore)
+                                    .font(.body)
+                                    .foregroundStyle(.white.opacity(0.92))
+                                    .lineSpacing(4)
+                            }
+                            .padding(.top, 4)
                         }
 
                         if !meme.tags.isEmpty {

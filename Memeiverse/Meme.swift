@@ -2,7 +2,6 @@ import Foundation
 
 struct Meme: Identifiable, Equatable {
     enum Source: String, Codable {
-        case superMeme = "supermeme.ai"
         case reddit = "meme-api.com"
         case curated = "curated"
     }
@@ -18,6 +17,7 @@ struct Meme: Identifiable, Equatable {
     let source: Source
     let isTrending: Bool
     let timestamp: Date?
+    let lore: String?
 
     init(
         id: String = UUID().uuidString,
@@ -30,7 +30,8 @@ struct Meme: Identifiable, Equatable {
         upvotes: Int? = nil,
         source: Source,
         isTrending: Bool = false,
-        timestamp: Date? = nil
+        timestamp: Date? = nil,
+        lore: String? = nil
     ) {
         self.id = id
         self.title = title
@@ -43,5 +44,36 @@ struct Meme: Identifiable, Equatable {
         self.source = source
         self.isTrending = isTrending
         self.timestamp = timestamp
+        self.lore = lore
+    }
+}
+
+extension Meme {
+    func withTrending(_ trending: Bool) -> Meme {
+        Meme(
+            id: id,
+            title: title,
+            caption: caption,
+            imageURL: imageURL,
+            postURL: postURL,
+            author: author,
+            tags: tags,
+            upvotes: upvotes,
+            source: source,
+            isTrending: trending,
+            timestamp: timestamp,
+            lore: lore
+        )
+    }
+}
+
+extension Meme.Source {
+    var displayName: String {
+        switch self {
+        case .reddit:
+            return "Reddit"
+        case .curated:
+            return "Curated Vault"
+        }
     }
 }

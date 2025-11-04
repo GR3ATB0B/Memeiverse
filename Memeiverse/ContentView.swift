@@ -4,20 +4,20 @@ struct ContentView: View {
     @EnvironmentObject private var director: GameDirector
     @State private var selectedMeme: Meme?
 
-    private let gradient = LinearGradient(
-        colors: [
-            Color.cyan.opacity(0.35),
-            Color.purple.opacity(0.55),
-            Color.black
-        ],
-        startPoint: .topLeading,
-        endPoint: .bottomTrailing
-    )
-
     var body: some View {
         NavigationStack {
             ZStack {
-                gradient.ignoresSafeArea()
+                Color.black.ignoresSafeArea()
+                LinearGradient(
+                    colors: [
+                        Color.cyan.opacity(0.25),
+                        Color.purple.opacity(0.35)
+                    ],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+                .ignoresSafeArea()
+
                 content
             }
             .navigationTitle("Memeiverse")
@@ -118,15 +118,22 @@ struct ContentView: View {
     private var curatedSection: some View {
         VStack(alignment: .leading, spacing: 16) {
             sectionHeader(title: "Classic lore vault", symbol: "books.vertical")
-            LazyVStack(alignment: .leading, spacing: 18) {
-                ForEach(director.curated) { meme in
-                    Button {
-                        selectedMeme = meme
-                    } label: {
-                        MemeListRow(meme: meme)
+            Text("Tap a legend to unfold its story.")
+                .font(.subheadline)
+                .foregroundStyle(.white.opacity(0.75))
+
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 18) {
+                    ForEach(director.curated) { meme in
+                        Button {
+                            selectedMeme = meme
+                        } label: {
+                            MemeLoreBadge(meme: meme)
+                        }
+                        .buttonStyle(.plain)
                     }
-                    .buttonStyle(.plain)
                 }
+                .padding(.vertical, 4)
             }
         }
     }
@@ -173,42 +180,41 @@ private struct MemeHeroCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            AsyncImage(url: meme.imageURL) { phase in
-                switch phase {
-                case .empty:
-                    ZStack {
-                        Color.black.opacity(0.3)
-                        ProgressView()
-                            .tint(.white)
+            RoundedRectangle(cornerRadius: 20)
+                .fill(Color.white.opacity(0.04))
+                .frame(height: 190)
+                .overlay {
+                    AsyncImage(url: meme.imageURL) { phase in
+                        switch phase {
+                        case .empty:
+                            ProgressView()
+                                .tint(.white)
+                        case .failure:
+                            Image(systemName: "xmark.octagon")
+                                .font(.system(size: 32))
+                                .foregroundColor(.white.opacity(0.7))
+                        case .success(let image):
+                            image
+                                .resizable()
+                                .scaledToFill()
+                        @unknown default:
+                            Color.black.opacity(0.4)
+                        }
                     }
-                case .failure:
-                    ZStack {
-                        Color.black.opacity(0.4)
-                        Image(systemName: "xmark.octagon")
-                            .foregroundColor(.white.opacity(0.7))
+                    .clipShape(RoundedRectangle(cornerRadius: 20))
+                }
+                .clipShape(RoundedRectangle(cornerRadius: 20))
+                .overlay(alignment: .topLeading) {
+                    if meme.isTrending {
+                        Text("🔥 trending")
+                            .font(.caption.bold())
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 6)
+                            .background(.black.opacity(0.55))
+                            .clipShape(Capsule())
+                            .padding(12)
                     }
-                case .success(let image):
-                    image
-                        .resizable()
-                        .scaledToFill()
-                @unknown default:
-                    Color.black.opacity(0.4)
                 }
-            }
-            .frame(height: 180)
-            .clipped()
-            .overlay(alignment: .topLeading) {
-                if meme.isTrending {
-                    Text("🔥 trending")
-                        .font(.caption.bold())
-                        .padding(.horizontal, 10)
-                        .padding(.vertical, 6)
-                        .background(.thinMaterial.opacity(0.7))
-                        .clipShape(Capsule())
-                        .padding(10)
-                }
-            }
-            .clipShape(RoundedRectangle(cornerRadius: 18))
 
             VStack(alignment: .leading, spacing: 6) {
                 Text(meme.title)
@@ -221,7 +227,7 @@ private struct MemeHeroCard: View {
                         .lineLimit(2)
                 }
                 HStack(spacing: 8) {
-                    Label(meme.source.rawValue, systemImage: "link")
+                    Label(meme.source.displayName, systemImage: "link")
                         .font(.caption)
                         .foregroundStyle(.white.opacity(0.7))
                     if let upvotes = meme.upvotes {
@@ -234,8 +240,9 @@ private struct MemeHeroCard: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(16)
-        .background(.white.opacity(0.08))
+        .background(.white.opacity(0.05))
         .clipShape(RoundedRectangle(cornerRadius: 24))
+        .frame(width: 300)
     }
 }
 
@@ -244,30 +251,28 @@ private struct MemeTile: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            AsyncImage(url: meme.imageURL) { phase in
-                switch phase {
-                case .empty:
-                    RoundedRectangle(cornerRadius: 14)
-                        .fill(Color.white.opacity(0.08))
-                        .overlay { ProgressView().tint(.white) }
-                case .failure:
-                    RoundedRectangle(cornerRadius: 14)
-                        .fill(Color.white.opacity(0.08))
-                        .overlay {
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color.white.opacity(0.06))
+                .aspectRatio(4.0 / 5.0, contentMode: .fit)
+                .overlay {
+                    AsyncImage(url: meme.imageURL) { phase in
+                        switch phase {
+                        case .empty:
+                            ProgressView().tint(.white)
+                        case .failure:
                             Image(systemName: "icloud.slash")
+                                .font(.system(size: 24))
                                 .foregroundStyle(.white.opacity(0.6))
+                        case .success(let image):
+                            image
+                                .resizable()
+                                .scaledToFill()
+                        @unknown default:
+                            Color.white.opacity(0.08)
                         }
-                case .success(let image):
-                    image
-                        .resizable()
-                        .scaledToFill()
-                        .clipShape(RoundedRectangle(cornerRadius: 14))
-                @unknown default:
-                    RoundedRectangle(cornerRadius: 14)
-                        .fill(Color.white.opacity(0.08))
+                    }
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
                 }
-            }
-            .frame(height: 160)
 
             Text(meme.title)
                 .font(.subheadline.weight(.semibold))
@@ -282,69 +287,71 @@ private struct MemeTile: View {
         }
         .padding(14)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(.white.opacity(0.08))
+        .background(.white.opacity(0.05))
         .clipShape(RoundedRectangle(cornerRadius: 20))
     }
 }
 
-private struct MemeListRow: View {
+private struct MemeLoreBadge: View {
     let meme: Meme
 
     var body: some View {
-        HStack(spacing: 16) {
-            AsyncImage(url: meme.imageURL) { phase in
-                switch phase {
-                case .empty:
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(Color.white.opacity(0.08))
-                        .overlay { ProgressView().tint(.white) }
-                case .failure:
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(Color.white.opacity(0.08))
-                        .overlay {
-                            Image(systemName: "photo")
-                                .foregroundStyle(.white.opacity(0.6))
-                        }
-                case .success(let image):
-                    image
-                        .resizable()
-                        .scaledToFill()
-                        .clipShape(RoundedRectangle(cornerRadius: 12))
-                @unknown default:
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(Color.white.opacity(0.08))
-                }
-            }
-            .frame(width: 72, height: 72)
-
-            VStack(alignment: .leading, spacing: 6) {
-                Text(meme.title)
-                    .font(.headline)
-                    .foregroundStyle(.white)
-                if let caption = meme.caption {
-                    Text(caption)
-                        .font(.subheadline)
-                        .foregroundStyle(.white.opacity(0.75))
-                        .lineLimit(2)
-                }
-                HStack(spacing: 8) {
-                    if let author = meme.author {
-                        Label(author, systemImage: "person")
-                            .font(.caption)
-                            .foregroundStyle(.white.opacity(0.6))
+        VStack(spacing: 12) {
+            ZStack {
+                Circle()
+                    .fill(
+                        AngularGradient(
+                            colors: [
+                                Color.purple.opacity(0.6),
+                                Color.cyan.opacity(0.6),
+                                Color.pink.opacity(0.6)
+                            ],
+                            center: .center
+                        )
+                    )
+                    .overlay {
+                        Circle()
+                            .stroke(Color.white.opacity(0.12), lineWidth: 1.5)
                     }
-                    Label(meme.source.rawValue, systemImage: "globe")
-                        .font(.caption)
-                        .foregroundStyle(.white.opacity(0.6))
+
+                AsyncImage(url: meme.imageURL) { phase in
+                    switch phase {
+                    case .empty:
+                        ProgressView().tint(.white)
+                    case .failure:
+                        Image(systemName: "sparkles")
+                            .foregroundStyle(.white.opacity(0.8))
+                            .font(.system(size: 28))
+                    case .success(let image):
+                        image
+                            .resizable()
+                            .scaledToFill()
+                    @unknown default:
+                        Color.black.opacity(0.4)
+                    }
                 }
+                .clipShape(Circle())
+                .padding(6)
             }
-            Spacer()
-            Image(systemName: "chevron.right")
-                .foregroundStyle(.white.opacity(0.4))
+            .frame(width: 96, height: 96)
+
+            Text(meme.title)
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(.white)
+                .lineLimit(1)
+
+            if let caption = meme.caption {
+                Text(caption)
+                    .font(.caption2)
+                    .foregroundStyle(.white.opacity(0.7))
+                    .lineLimit(2)
+                    .multilineTextAlignment(.center)
+            }
         }
-        .padding(16)
+        .padding(14)
+        .frame(width: 140)
         .background(.white.opacity(0.05))
-        .clipShape(RoundedRectangle(cornerRadius: 18))
+        .clipShape(RoundedRectangle(cornerRadius: 22))
     }
 }
 
@@ -352,7 +359,7 @@ private struct MemeListRow: View {
     ContentView()
         .environmentObject(
             GameDirector(
-                feedService: MemeFeedService(superMemeConfiguration: .init(baseURL: URL(string: "https://supermeme.ai/api/v1")!, apiKey: nil)),
+                feedService: MemeFeedService(),
                 repository: MemeRepository()
             )
         )
