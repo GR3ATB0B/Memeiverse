@@ -227,7 +227,7 @@ private struct MemeHeroCard: View {
                 Text(meme.title)
                     .font(.headline)
                     .foregroundStyle(.white)
-                if let caption = meme.caption {
+                if meme.source == .curated, let caption = meme.caption {
                     Text(caption)
                         .font(.subheadline)
                         .foregroundStyle(.white.opacity(0.85))
@@ -292,7 +292,7 @@ private struct MemeTile: View {
                 .font(.subheadline.weight(.semibold))
                 .foregroundStyle(.white)
                 .lineLimit(2)
-            if let caption = meme.caption {
+            if meme.source == .curated, let caption = meme.caption {
                 Text(caption)
                     .font(.caption)
                     .foregroundStyle(.white.opacity(0.7))
